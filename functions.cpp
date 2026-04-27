@@ -27,6 +27,17 @@ std::vector<std::vector<double> > convertToMatrix(const adjacency_list_t &list) 
 
 void dfs(node_id_t startNode, std::vector<std::vector<double>> &matrix, std::vector<bool>& visited) {
     const double noEdge = std::numeric_limits<double>::infinity();
+    //---Test utskrifter - Ta bort sen
+    std::cout << "dfs startNode = " << startNode
+              << ", matrix.size = " << matrix.size()
+              << ", visited.size = " << visited.size()
+              << "\n";
+
+    if (startNode < 0 || startNode >= matrix.size()) {
+        std::cout << "ERROR: startNode out of range\n";
+        return;
+    }
+    //--- slut testutskrifter
 
     visited[startNode] = true; //sätter startnod till besökt
     for (int i = 0; i < matrix.size(); i++) {
@@ -39,7 +50,7 @@ void dfs(node_id_t startNode, std::vector<std::vector<double>> &matrix, std::vec
 //itererar genom visited och kollar om någon nod inte är visited -> isf returneras false (ej sammanhängande)
 bool allVisited(const std::vector<bool>& visited) {
     for (auto v : visited) {
-        if (!visited[v]) return false;
+        if (!v) return false;
     }
     return true;
 }
