@@ -141,12 +141,14 @@ void printPath(node_id_t startNode, node_id_t targetNode, const dijkstraResult& 
     auto path = makePath(targetNode, result.prev);
 
 
-
     for (int i = 0; i < path.size(); i++) {
-        std::cout << meta.at(path[i]) << "->" << "\n";
+        std::cout << meta.at(path[i]);
+        if (i + 1 < path.size()) { //skriver endast ut pilen om det inte är sista
+            std::cout << " ->" << "\n";
+        }
     }
 
-    std::cout << "Total distans: " << result.dist[targetNode] << "\n";
+    std::cout << "\n Total distans: " << result.dist[targetNode] << "\n";
 }
 
 void printMatrix(std::vector<std::vector<double>> &matrix) {
