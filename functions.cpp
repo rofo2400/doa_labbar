@@ -6,6 +6,7 @@
 
 #include <iostream>
 #include <limits>
+#include <queue>
 
 
 //Funktion som konverterar adjacency list från parse_file till adjacency matrix
@@ -27,26 +28,31 @@ std::vector<std::vector<double> > convertToMatrix(const adjacency_list_t &list) 
 
 void dfs(node_id_t startNode, std::vector<std::vector<double>> &matrix, std::vector<bool>& visited) {
     const double noEdge = std::numeric_limits<double>::infinity();
-    //---Test utskrifter - Ta bort sen
-    std::cout << "dfs startNode = " << startNode
-              << ", matrix.size = " << matrix.size()
-              << ", visited.size = " << visited.size()
-              << "\n";
-
-    if (startNode < 0 || startNode >= matrix.size()) {
-        std::cout << "ERROR: startNode out of range\n";
-        return;
-    }
-    //--- slut testutskrifter
 
     visited[startNode] = true; //sätter startnod till besökt
     for (int i = 0; i < matrix.size(); i++) {
-        if (!visited[i] && matrix[startNode][i] != noEdge) { //kollar om nod i är besökt och om det finns en kant mellan aktuella noden och nod i
+        if (!visited[i] && (matrix[startNode][i] != noEdge)) { //kollar om nod i är besökt och om det finns en kant mellan aktuella noden och nod i
             dfs(i, matrix, visited); //kallar på funktionen rekursivt
         }
     }
 }
 
+void bfs(node_id_t startNode, std::vector<std::vector<double>>& matrix, std::vector<bool>& visited) {
+    const double noEdge = std::numeric_limits<double>::infinity(); //representerar ingen kant med infinity
+    std::queue<int> q;
+    visited[startNode] = true; //sätter startnoden till besökt
+    q.push(startNode); //lägger till startnod i kön
+    while (!q.empty()) {
+        int currentNode = q.front();
+        q.pop();
+        for (int i = 0; i < matrix.size(); i++) {
+            if (!visited[i] && (matrix[currentNode][i] != noEdge)) {
+                visited[i] = true;
+                q.push(i);
+            }
+        }
+    }
+}
 //itererar genom visited och kollar om någon nod inte är visited -> isf returneras false (ej sammanhängande)
 bool allVisited(const std::vector<bool>& visited) {
     for (auto v : visited) {
@@ -58,6 +64,15 @@ bool allVisited(const std::vector<bool>& visited) {
 bool dfsConnected(std::vector<std::vector<double>> &matrix) {
     std::vector<bool> visited(matrix.size(), false);
     dfs(0, matrix, visited);
+    if (!allVisited(visited)) {
+        return false;
+    }
+    return true;
+}
+
+bool bfsConnected(std::vector<std::vector<double>> &matrix) {
+    std::vector<bool> visited(matrix.size(), false);
+    bfs(0, matrix, visited);
     if (!allVisited(visited)) {
         return false;
     }
