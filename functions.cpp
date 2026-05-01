@@ -2,6 +2,9 @@
 // Created by fonse on 4/20/2026.
 //
 #include "functions.h"
+
+#include <algorithm>
+
 #include "reader.h"
 
 #include <iostream>
@@ -53,6 +56,41 @@ void bfs(node_id_t startNode, std::vector<std::vector<double>>& matrix, std::vec
         }
     }
 }
+
+dijkstraResult dijkstras(node_id_t startNode, std::vector<std::vector<double>> &matrix) {
+    const double noEdge = std::numeric_limits<double>::infinity(); //representerar ingen kant med infinity
+    auto undef = -1;
+    auto sz = matrix.size();
+    using nodeInfo = std::pair<weight_t, node_id_t>; //distans och nod-ID
+
+    std::priority_queue<nodeInfo, std::vector<nodeInfo>, std::greater<nodeInfo>> Q; //skapar en pq med minHeap som innehåller distans och nod-ID. lägst distans/vikt hamnar först
+    std::vector<double> dist(sz, noEdge); //fyller vektorn med INF
+    std::vector<node_id_t> prev(sz, undef); //fyller vektorn med -1
+
+    dist[startNode] = 0;
+    Q.push({0, startNode});
+    while (!Q.empty()) {
+        auto [currentDist, currentNode] = Q.top(); //hämtar distans och nod-id från kön (lägst vikt)
+        Q.pop();
+
+        //kontroll för om det redan finns en kortare väg till currentNode
+        if (currentDist > dist[currentNode]) {
+            continue;
+        }
+        for (int i = 0; i < sz; i++) {
+            if (matrix[currentNode][i] != noEdge) { //kollar om det finns en kant från currentNode till i
+                weight_t alternative = dist[currentNode] + matrix[currentNode][i]; //kostnad av att gå från start till i via currentNode
+                if (alternative < dist[i]) { //om kostnaden av att gå via currentNode är lägre än tidigare kortaste väg
+                    prev[i] = currentNode; //föregående nod blir currentNode
+                    dist[i] = alternative; //kortaste vägen till i blir via currentNode
+                    Q.push({alternative,i}); //lägger till den giltiga noden i kön
+                }
+            }
+        }
+    }
+    return dijkstraResult{dist,prev};
+}
+
 //itererar genom visited och kollar om någon nod inte är visited -> isf returneras false (ej sammanhängande)
 bool allVisited(const std::vector<bool>& visited) {
     for (auto v : visited) {
@@ -79,7 +117,36 @@ bool bfsConnected(std::vector<std::vector<double>> &matrix) {
     return true;
 }
 
-void printPath(node_id_t startNode, std::vector<std::vector<double>> &matrix) {
+std::vector<node_id_t> makePath(node_id_t targetNode, const std::vector<node_id_t> &prev) {
+    std::vector<node_id_t> path;
+    auto undef = -1;
+    node_id_t currentNode = targetNode;
+
+    while (currentNode != undef) {
+        path.push_back(currentNode);
+        currentNode = prev[currentNode];
+    }
+    std::reverse(path.begin(), path.end());
+    return path;
+}
+
+void printPath(node_id_t startNode, node_id_t targetNode, const dijkstraResult& result, const meta_t& meta) {
+
+    std::cout << "Shortest path from " << meta.at(startNode) << " to " << meta.at(targetNode) << ": \n";
+
+    if (result.dist[targetNode] == std::numeric_limits<double>::infinity()) {
+        std::cout << "There is no path to" << meta.at(targetNode) << ".\n";
+        return;
+    }
+    auto path = makePath(targetNode, result.prev);
+
+
+
+    for (int i = 0; i < path.size(); i++) {
+        std::cout << meta.at(path[i]) << "->" << "\n";
+    }
+
+    std::cout << "Total distans: " << result.dist[targetNode] << "\n";
 }
 
 void printMatrix(std::vector<std::vector<double>> &matrix) {

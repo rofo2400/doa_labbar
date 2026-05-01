@@ -1,7 +1,3 @@
-//
-// Created by fonse on 4/20/2026.
-//
-
 #ifndef LABB1_READER_H
 #define LABB1_READER_H
 

@@ -1,7 +1,3 @@
-//
-// Created by fonse on 4/20/2026.
-//
-
 #include "reader.h"
 
 #include <fstream>
