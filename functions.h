@@ -13,9 +13,13 @@ std::vector<std::vector<double>> convertToMatrix(const adjacency_list_t& list);
 
 void dfs(node_id_t startNode, std::vector<std::vector<double>>& matrix, std::vector<bool>& visited);
 
+void bfs(node_id_t startNode, std::vector<std::vector<double>>& matrix, std::vector<bool>& visited);
+
 bool allVisited(const std::vector<bool>& visited);
 
 bool dfsConnected(std::vector<std::vector<double>>& matrix);
+
+bool bfsConnected(std::vector<std::vector<double>>& matrix);
 
 void printPath(node_id_t startNode, std::vector<std::vector<double>>& matrix);
 
