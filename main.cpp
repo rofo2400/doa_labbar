@@ -13,6 +13,7 @@ int main() {
     auto matrix = convertToMatrix(adj_list);
     auto meta = adj_list.first;
 
+    node_id_t skyddrum = 0;
     node_id_t nackstavagen = 23;
     node_id_t forradet = 37;
     node_id_t L319 = 46;
@@ -20,13 +21,13 @@ int main() {
     node_id_t universitetet = 20;
     node_id_t biteline = 19;
 
-    if (dfsConnected(matrix)) {
+    if (dfsConnected(skyddrum, matrix)) {
         std::cout << "[DFS]The graph is connected" << "\n";
     }
     else {
         std::cout << "[DFS]The graph is not connected" << "\n";
     }
-    if (bfsConnected(matrix)) {
+    if (bfsConnected(skyddrum, matrix)) {
         std::cout << "[BFS]The graph is connected" << "\n";
     }
     else {

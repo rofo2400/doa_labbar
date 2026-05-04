@@ -24,9 +24,9 @@ dijkstraResult dijkstras(node_id_t startNode, std::vector<std::vector<double>>& 
 
 bool allVisited(const std::vector<bool>& visited);
 
-bool dfsConnected(std::vector<std::vector<double>>& matrix);
+bool dfsConnected(node_id_t startNode, std::vector<std::vector<double>>& matrix);
 
-bool bfsConnected(std::vector<std::vector<double>>& matrix);
+bool bfsConnected(node_id_t startNode, std::vector<std::vector<double>>& matrix);
 
 std::vector<node_id_t> makePath(node_id_t target, const std::vector<node_id_t>& prev);
 

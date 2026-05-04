@@ -99,18 +99,18 @@ bool allVisited(const std::vector<bool>& visited) {
     return true;
 }
 
-bool dfsConnected(std::vector<std::vector<double>> &matrix) {
+bool dfsConnected(node_id_t startNode, std::vector<std::vector<double>> &matrix) {
     std::vector<bool> visited(matrix.size(), false);
-    dfs(0, matrix, visited);
+    dfs(startNode, matrix, visited);
     if (!allVisited(visited)) {
         return false;
     }
     return true;
 }
 
-bool bfsConnected(std::vector<std::vector<double>> &matrix) {
+bool bfsConnected(node_id_t startNode, std::vector<std::vector<double>> &matrix) {
     std::vector<bool> visited(matrix.size(), false);
-    bfs(0, matrix, visited);
+    bfs(startNode, matrix, visited);
     if (!allVisited(visited)) {
         return false;
     }
