@@ -132,7 +132,7 @@ std::vector<node_id_t> makePath(node_id_t targetNode, const std::vector<node_id_
 
 void printPath(node_id_t startNode, node_id_t targetNode, const dijkstraResult& result, const meta_t& meta) {
 
-    std::cout << "Shortest path from " << meta.at(startNode) << " to " << meta.at(targetNode) << ": \n";
+    std::cout << "Shortest path from" << meta.at(startNode) << " to" << meta.at(targetNode) << ": \n";
 
     if (result.dist[targetNode] == std::numeric_limits<double>::infinity()) {
         std::cout << "There is no path to" << meta.at(targetNode) << ".\n";
